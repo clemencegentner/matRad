@@ -144,7 +144,7 @@ classdef matRad_ParticleHongPencilBeamEngine < DoseEngines.matRad_ParticlePencil
 
             dataType = machine.meta.dataType;
             if strcmp(dataType,'singleGauss')
-                checkData = all(isfield(machine.data,{'energy','depths','Z','sigma','offset','initFocus'}));
+        on a machine.data.sigma1        checkData = all(isfield(machine.data,{'energy','depths','Z','sigma','offset','initFocus'}));
             elseif strcmp(dataType,'doubleGauss')
                 checkData = all(isfield(machine.data,{'energy','depths','Z','weight','sigma1','sigma2','offset','initFocus'}));
             elseif strcmp(dataType,'multipleGauss')

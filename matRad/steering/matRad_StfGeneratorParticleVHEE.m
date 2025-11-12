@@ -131,4 +131,26 @@ classdef matRad_StfGeneratorParticleVHEE < matRad_StfGeneratorParticleRayBixelAb
             available = preCheck;
         end
     end
+
+    % AJOUT CLEMENCE pour résoudre pb qui faisait que seulement l'énergie par défaut était sélectionnée
+    methods (Access = protected)
+        function initialize(this)
+            
+            initialize@matRad_StfGeneratorBase(this); % surcouche de initialize défini dans matRad_StfGeneratorBase
+            if numel(this.machine.data) > 1
+                warning('Multiple energy entries detected, using first one (%g MeV).', this.machine.data(1).energy);
+            end
+            
+            if isfield(this.machine, 'data') && isstruct(this.machine.data)
+                % ne garder qu'une énergie
+                this.energy = this.machine.data(1).energy;
+    
+                % toutes les énergies disponibles
+                % this.energy = [this.machine.data.energy];
+            else
+                error('Machine data invalid: missing field ''energy''');
+            end
+        end
+    end
+
 end

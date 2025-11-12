@@ -21,12 +21,12 @@ load TG119.mat
 %load HEAD_AND_NECK
 %load PROSTATE.mat
 %load LIVER.mat
-%load BOXPHANTOM.mat
+% load BOXPHANTOM.mat
 
 % meta information for treatment plan
-pln.numOfFractions  = 30;
-pln.radiationMode   = 'photons';            % either photons / protons / helium / carbon / brachy / VHEE
-pln.machine         = 'Generic';            % generic for RT / LDR or HDR for BT / Generic or Focused for VHEE
+pln.numOfFractions  = 2;
+pln.radiationMode   = 'VHEE';            % either photons / protons / helium / carbon / brachy / VHEE
+pln.machine         = 'LargeTest';            % generic for RT / LDR or HDR for BT / Generic or Focused for VHEE
 
 pln.bioModel = 'none';      % none: for all                                 % constRBE: constant RBE for photons and protons 
                             % MCN: McNamara-variable RBE model for protons  % WED: Wedenberg-variable RBE model for protons 
@@ -35,16 +35,18 @@ pln.bioModel = 'none';      % none: for all                                 % co
 pln.multScen = 'nomScen';   % scenario creation type 'nomScen'  'wcScen' 'impScen' 'rndScen'         
 
 % beam geometry settings
-pln.propStf.bixelWidth      = 5; % [mm] / also corresponds to lateral spot spacing for particles
-pln.propStf.gantryAngles    = [0:72:359]; % [°] ;
-pln.propStf.couchAngles     = [0 0 0 0 0]; % [°] ; 
+pln.propStf.bixelWidth      = 1000; % [mm] / also corresponds to lateral spot spacing for particles
+pln.propStf.gantryAngles    = 0; % [°] ;
+pln.propStf.couchAngles     = 0; % [°] ; 
 pln.propStf.numOfBeams      = numel(pln.propStf.gantryAngles);
 pln.propStf.isoCenter       = ones(pln.propStf.numOfBeams,1) * matRad_getIsoCenter(cst,ct,0);
+pln.propStf.generator       = 'VHEE';
 
 % dose calculation settings
 pln.propDoseCalc.doseGrid.resolution.x = 5; % [mm]
 pln.propDoseCalc.doseGrid.resolution.y = 5; % [mm]
 pln.propDoseCalc.doseGrid.resolution.z = 5; % [mm]
+pln.propDoseCalc.engine     = 'HongPB';
 
 % optimization settings
 pln.propOpt.quantityOpt     = 'physicalDose';   % Quantity to optimizer (could also be RBExDose, BED, effect)
@@ -67,7 +69,6 @@ resultGUI  = matRad_fluenceOptimization(dij,cst,pln);
 
 %% sequencing
 resultGUI = matRad_sequencing(resultGUI,stf,dij,pln);
-
 
 %% DAO
 if strcmp(pln.radiationMode,'photons') && pln.propOpt.runDAO

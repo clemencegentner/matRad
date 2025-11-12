@@ -37,6 +37,10 @@ if nargin == 4
     generator.visMode = visMode;
 end
 
+% AJOUT CLEMENCE POUR PRISE EN COMPTE DE L'ENERGIE (MONO) DE LA MACHINE
+% generator.machine = matRad_loadMachine(struct('radiationMode',pln.radiationMode,'machine',pln.machine));
+% generator.energy = generator.machine.data.energy;
+
 %call the calcDose funktion
 stf = generator.generate(ct,cst);
 
